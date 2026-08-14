@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QWidget, QMessageBox, QPushButton
                                , QLineEdit, QLabel, QHBoxLayout, QVBoxLayout) 
 
 import PySide6.QtCore
-import signal
+import signal, abc
 import core.auth
 
 class loginpage (QWidget):
@@ -37,8 +37,24 @@ class loginpage (QWidget):
         title.setAlignment(PySide6.QtCore.Qt.AlignCenter)
         layout.addWidget(title)
 #campo de usuario
+        self.usuario_input = QLineEdit(self)
 
+    self = any.input
+    layout = QVBoxLayout(self)
+    self.usuario_input.setPlaceholderText ("Usuario")
+    layout.addWidget(self.usuario_input)
 #campo de contraseña
+
+    class contraseña_input(QLineEdit):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.setPlaceholderText("Contraseña")
+            self.setEchoMode(QLineEdit.Password)
+            layout = QVBoxLayout(self)
+            self.contrasena_input = QLineEdit(self)
+            self.contrasena_input.setPlaceholderText("Contraseña")
+            self.contrasena_input.setEchoMode(QLineEdit.Password)
+            layout.addWidget(self.contrasena_input)
 
 #boton de login
 
