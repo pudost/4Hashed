@@ -62,38 +62,6 @@ def connect_signals(self):
     self.pasword_input.returnPressed.connect(self.handle_login)
     self.login_successful.connect(self.handle_login_success)
 
-                                                                                #boton de login
-
-def __init__ (self, parent = None):
-            super().__init__(parent)
-            layout = QVBoxLayout(self)
-            self.login_button = QPushButton("Iniciar sesion", self)
-            self.setText("Iniciar sesión")
-
-                                                                       #label para mensajes de error
-
-            self.error_label
-            handle_login(self)
-
-            def __init__(self, parent=None):
-                    super().__init__(parent)
-            layout.activate
-            self.error_label = QLabel(self)
-            self.error_label.setStyleSheet("color: red;")
-            layout.addWidget(self.error_label)
-            if __name__ == "__main__": True
-            elif __name__ == "__main__":
-                    app = QApplication([])
-                    window = loginpage()
-                    window.show()
-                    app.exec()
-            
-            def connect_signals(self):
-                            self.login_button.clicked.connect(self.handle_login)
-                            self.usuario_input.returnPressed.connect(self.handle_login)
-                            self.contrasena_input.returnPressed.connect(self.handle_login)
-                            self.login_successful.connect(self.handle_login_success)
-
                                                                         # Maneja el clic en el botón o el Enter. Validaciones básicas de interfaz
 
 def handle_login(self):
