@@ -19,11 +19,11 @@ from PySide6.QtWidgets import (QApplication, QWidget, QMessageBox, QPushButton
                                , QLineEdit, QLabel, QHBoxLayout, QVBoxLayout) 
 
 import PySide6.QtCore
-import signal, abc
+from PySide6.QtCore import Signal
 import core.auth
 
 class loginpage (QWidget):
-    login_successful = signal (object)
+    login_successful = Signal (object)
 
     def __init__ (self,parent = None):
         super().__init__(parent)
@@ -31,47 +31,72 @@ class loginpage (QWidget):
         self.connect_signals()
 
     def setup_ui(self):
-        layout = QVBoxLayout (layout)
+        layout = self.layout = QVBoxLayout(self)
                                                                     #Titulo de la ventana
         title = QLabel ("Iniciar sesion")
         title.setAlignment(PySide6.QtCore.Qt.AlignCenter)
         layout.addWidget(title)
                                                                     #campo de usuario
         self.usuario_input = QLineEdit(self)
-
-    self = any.input
-    layout = QVBoxLayout(self)
-    self.usuario_input.setPlaceholderText ("Usuario")
-    layout.addWidget(self.usuario_input)
+        self.layout.addWidget(self.usuario_input)
+        self.usuario_input.setPlaceholderText ("Usuario")
                                                                     #campo de contraseña
+        layout.activate = self.parent
+        self.login_button = QPushButton("Iniciar sesión", self)
+        layout = QVBoxLayout(self)
+        self.loggin_button = QPushButton("Iniciar sesion", self)
+        layout.addWidget(self.loggin_button)
+        self.setText("Iniciar sesión")
 
-    class contraseña_input(QLineEdit):
-        def __init__(self, parent=None):
+
+                                                                       #label para mensajes de error
+
+
+        layout = QVBoxLayout(self)
+        self.error_label = QLabel(self)
+        self.error_label.setStyleSheet("color: red;")
+        layout.addWidget(self.error_label)
+        if __name__ == "__main__": True
+        elif __name__ == "__main__":
+                    app = QApplication([])
+                    window = loginpage()
+                    window.show()
+                    app.exec()
+            
+        def connect_signals(self):
+                            self.login_button.clicked.connect(self.handle_login)
+                            self.usuario_input.returnPressed.connect(self.handle_login)
+                            self.contrasena_input.returnPressed.connect(self.handle_login)
+                            self.login_successful.connect(self.handle_login_success)
+
+
+                                                                            #Espaciado
+
+        layout.addStretch()
+
+                                                                           ## Conecta las acciones del usuario con los handlers
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.password_input)
+
+                                                                                #boton de login
+
+def __init__ (self, parent = None):
+            self.login_button = QPushButton("Iniciar sesión", self)
             super().__init__(parent)
-            self.setPlaceholderText("Contraseña")
-            self.setEchoMode(QLineEdit.Password)
             layout = QVBoxLayout(self)
-            self.contrasena_input = QLineEdit(self)
-            self.contrasena_input.setPlaceholderText("Contraseña")
-            self.contrasena_input.setEchoMode(QLineEdit.Password)
-            layout.addWidget(self.contrasena_input)
-
-                                                                        #boton de login
-
-    class login_button(QPushButton):
-        def __init__ (self, parent = None):
-            super().__init__(parent)
-            layout = QVBoxLayout(self)
-            self.loggin_button = QPushButton("Iniciar sesion", self)
+            self.login_button = QPushButton("Iniciar sesion", self)
             layout.addWidget(self.loggin_button)
             self.setText("Iniciar sesión")
 
 
                                                                        #label para mensajes de error
 
-    class error_label(QLabel):
-        def __init__(self, parent=None):
-            super().__init__(parent)
+            self.error_label
+            handle_login(self)
+            def __init__(self, parent=None):
+                    super().__init__(parent)
             layout = QVBoxLayout(self)
             self.error_label = QLabel(self)
             self.error_label.setStyleSheet("color: red;")
@@ -83,18 +108,18 @@ class loginpage (QWidget):
                     window.show()
                     app.exec()
             
+            def connect_signals(self):
+                            self.login_button.clicked.connect(self.handle_login)
+                            self.usuario_input.returnPressed.connect(self.handle_login)
+                            self.contrasena_input.returnPressed.connect(self.handle_login)
+                            self.login_successful.connect(self.handle_login_success)
 
 
                                                                             #Espaciado
 
-    layout.addStretch()
+            layout.addStretch()
 
                                                                            ## Conecta las acciones del usuario con los handlers
-def connect_signals(self):
-    self.login_button.clicked.connect(self.handle_login)
-    self.usuario_input.returnPressed.connect(self.handle_login)
-    self.contrasena_input.returnPressed.connect(self.handle_login)
-    self.login_successful.connect(self.handle_login_success)
 
 
                                                                         # Maneja el clic en el botón o el Enter. Validaciones básicas de interfaz
@@ -104,10 +129,9 @@ def handle_login(self):
     password = self.contrasena_input.text()
     if not usuarname or not password:
         self.error_label.setText("por favor ingrese usuario y contraseña")
-        return
-    while True:
+        
+
         try:
-            core.auth.auth_result = core.auth.authenticate(usuarname, password)
             if core.auth.auth_result:
                 self.login_successful.emit(usuarname)
             else:
@@ -118,7 +142,7 @@ def handle_login(self):
             authentication_result = True
             self.login_button .setEnabled(True)
 
-                                                                          #Reacciona al éxito del login
+                                                                        #Reacciona al éxito del login
 def on_login_success(self, usuarname):
     QMessageBox.information(self, "Login exitoso", f"Biemvenido, {usuarname}!")
     self.login_successful.emit(usuarname)
