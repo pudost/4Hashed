@@ -56,40 +56,45 @@ class loginpage (QWidget):
                                                                             #Espaciado, Conecta las acciones del usuario con los handlers
         layout.addStretch()
 
-def connect_signals(self):
-    self.login_button.clicked.connect(self.handle_login)
-    self.usuario_input.returnPressed.connect(self.handle_login)
-    self.pasword_input.returnPressed.connect(self.handle_login)
-    self.login_successful.connect(self.handle_login_success)
+    def connect_signals(self):
+        self.login_button.clicked.connect(self.handle_login)
+        self.usuario_input.returnPressed.connect(self.handle_login)
+        self.password_input.returnPressed.connect(self.handle_login)
 
-                                                                        # Maneja el clic en el botón o el Enter. Validaciones básicas de interfaz
+    def handle_login(self):
+        username = self.usuario_input.text()
+        password = self.password_input.text()
+        if not username:
+            self.error_label.setText("Por favor, ingrese su usuario.")
+            self.error_label.show()
+            return
+        if not password:
+            self.error_label.setText("Por favor, ingrese su contraseña.")
+            self.error_label.show()
+            return
+        self.error_label.hide()
+        success, message = core.auth.authenticate_user(username, password)
+        if success: 
+            self.successful_login(username)
+        else:
+            self.on_login_failure(message)
 
-def handle_login(self):
-    usuarname = self.usuario_input.text()
-    password = self.contrasena_input.text()
-    if not usuarname or not password:
-        try:
-            if core.auth.auth_result:
-                self.login_successful.emit(usuarname)
-            else:
-                self.error_label.setText("usuario o contraseña incorrectos")
-        except Exception as e:
-            self.error_label.setText(f"Error: {str(e)}")
-        finally:
-            authentication_result = True
-            self.login_button .setEnabled(True)
-
-                                                                        #Reacciona al éxito del login
-def on_login_success(self, usuarname):
-    QMessageBox.information(self, "Login exitoso", f"Biemvenido, {usuarname}!")
-    self.login_successful.emit(usuarname)
-    self.clear_fields()
+    def clear_fields(self):
+            self.usuario_input.clear()
+            self.password_input.clear()
+            self.usuario_input.setFocus()
+    
+    def successful_login(self, username):
+        QMessageBox.information(self, "Login exitoso", f"Bienvenido, {username}!")
+        self.login_successful.emit(username)
+        self.handle_login_success()
+        
 
                                                                             #En caso de no tener exito al no poder inicial la sesion
-def on_login_falture(self, error_mensage):
-    self.show_error_mesage(error_mensage, is_error = True)
-    self.password_input.clear()
-    self.password_input.setFocus()
+    def on_login_failure(self, error_message):
+        self.clear_fields()
+        self.error_label.setText(error_message)
+        self.error_label.show()
 
 if __name__ == "__main__": 
     app = QApplication([])
