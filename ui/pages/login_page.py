@@ -14,13 +14,17 @@
 #12 generación de salts;
 #13 comparación criptográfica de contraseñas;
 #14 creación de usuarios directamente en SQLite.
-import PySide6.Qt.lib
 from PySide6.QtWidgets import (QApplication, QWidget, QMessageBox, QPushButton
                                , QLineEdit, QLabel, QHBoxLayout, QVBoxLayout) 
 
 import PySide6.QtCore
 from PySide6.QtCore import Signal
-import core.auth
+
+# ui/login_page.py
+class LoginPage:
+    def __init__(self, auth):  #Recibe auth, no lo importa
+        self.auth = auth
+
 
 class loginpage (QWidget):
     login_successful = Signal (object)
@@ -73,7 +77,7 @@ class loginpage (QWidget):
             self.error_label.show()
             return
         self.error_label.hide()
-        success, message = core.auth.authenticate_user(username, password)
+        success, message = self.auth.authenticate_user(username, password)
         if success: 
             self.successful_login(username)
         else:
